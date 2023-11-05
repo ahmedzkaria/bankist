@@ -292,6 +292,25 @@ btnTransfer.addEventListener('click', function (e) {
   inputTransferAmount.blur();
 });
 
+// 161 some and every
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    // Add +ve movement:
+    currentAccount.movements.push(amount);
+
+    // Update UI
+    updateUI(currentAccount);
+  }
+
+  // Clear fields
+  inputLoanAmount.value = '';
+  inputLoanAmount.blur();
+});
+
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -651,3 +670,70 @@ console.log(account);
 //     console.log(acc);
 //   }
 // }
+
+//////////////////////////////////////////
+// 161 some and every
+
+// EQUALITY ONLY
+movements.includes(-130); // true
+// -------------the same as-------------------
+movements.some(mov => mov === -130);
+
+// SOME: CONDITION
+const anyDepositsHere = movements.some(mov => mov > 0);
+console.log(anyDepositsHere); // true
+
+// EVERY
+console.log(movements.every(mov => mov > 0)); //false
+console.log(account4.movements.every(mov => mov > 0)); //true bec all of the movements here is true
+
+// Seperate callbacks
+const deposit = mov => mov > 0;
+console.log(movements.some(deposit));
+console.log(movements.every(deposit));
+console.log(movements.filter(deposit));
+///////////////////////////////////////
+// 163 sorting arrays
+
+// sort() mutate arrays
+
+// Strings
+const owners = ['John', 'May', 'Nour', 'Ahmed'];
+console.log(owners.sort());
+
+// NUmbers
+console.log(movements);
+// sort only works with strings, so it sort every thing alphapiticly like ' -,+,1,2,...':
+// console.log(movements.sort());
+
+//return > 0 .. B , A (switch order)
+//return < 0 .. A , B (keep in that order)
+
+// ascending
+
+// movements.sort((a, b) => {
+//   if (a > b) {
+//     return 1; // means if a > b sitch and make b 'the samller' to be the first
+//   }
+//   if (a < b) {
+//     return -1;
+//   }
+// });
+
+// we can replace 'return 1 or -1' by simply saying a - b ,so if a is greater than b it will return + , if a is less than b it will return - automaticly.And like that it can be ASCENDING:
+movements.sort((a, b) => a - b);
+
+console.log(movements);
+
+// descending
+// movements.sort((a, b) => {
+//   if (a > b) {
+//     return -1; // means if a > b sitch and make b 'the samller' to be the first
+//   }
+//   if (a < b) {
+//     return 1;
+//   }
+// });
+movements.sort((a, b) => b - a);
+
+console.log(movements);
