@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -6,28 +6,28 @@
 
 // Data
 const account1 = {
-  owner: 'Jonas Schmedtmann',
+  owner: "Ahmed Zakaria",
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 };
 
 const account2 = {
-  owner: 'Jessica Davis',
+  owner: "Jessica Davis",
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
 };
 
 const account3 = {
-  owner: 'Steven Thomas Williams',
+  owner: "Steven Thomas Williams",
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
 };
 
 const account4 = {
-  owner: 'Sarah Smith',
+  owner: "Sarah Smith",
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
@@ -36,41 +36,45 @@ const account4 = {
 const accounts = [account1, account2, account3, account4];
 
 // Elements
-const labelWelcome = document.querySelector('.welcome');
-const labelDate = document.querySelector('.date');
-const labelBalance = document.querySelector('.balance__value');
-const labelSumIn = document.querySelector('.summary__value--in');
-const labelSumOut = document.querySelector('.summary__value--out');
-const labelSumInterest = document.querySelector('.summary__value--interest');
-const labelTimer = document.querySelector('.timer');
+const labelWelcome = document.querySelector(".welcome");
+const labelDate = document.querySelector(".date");
+const labelBalance = document.querySelector(".balance__value");
+const labelSumIn = document.querySelector(".summary__value--in");
+const labelSumOut = document.querySelector(".summary__value--out");
+const labelSumInterest = document.querySelector(".summary__value--interest");
+const labelTimer = document.querySelector(".timer");
 
-const containerApp = document.querySelector('.app');
-const containerMovements = document.querySelector('.movements');
+const containerApp = document.querySelector(".app");
+const containerMovements = document.querySelector(".movements");
 
-const btnLogin = document.querySelector('.login__btn');
-const btnTransfer = document.querySelector('.form__btn--transfer');
-const btnLoan = document.querySelector('.form__btn--loan');
-const btnClose = document.querySelector('.form__btn--close');
-const btnSort = document.querySelector('.btn--sort');
+const btnLogin = document.querySelector(".login__btn");
+const btnTransfer = document.querySelector(".form__btn--transfer");
+const btnLoan = document.querySelector(".form__btn--loan");
+const btnClose = document.querySelector(".form__btn--close");
+const btnSort = document.querySelector(".btn--sort");
 
-const inputLoginUsername = document.querySelector('.login__input--user');
-const inputLoginPin = document.querySelector('.login__input--pin');
-const inputTransferTo = document.querySelector('.form__input--to');
-const inputTransferAmount = document.querySelector('.form__input--amount');
-const inputLoanAmount = document.querySelector('.form__input--loan-amount');
-const inputCloseUsername = document.querySelector('.form__input--user');
-const inputClosePin = document.querySelector('.form__input--pin');
+const inputLoginUsername = document.querySelector(".login__input--user");
+const inputLoginPin = document.querySelector(".login__input--pin");
+const inputTransferTo = document.querySelector(".form__input--to");
+const inputTransferAmount = document.querySelector(".form__input--amount");
+const inputLoanAmount = document.querySelector(".form__input--loan-amount");
+const inputCloseUsername = document.querySelector(".form__input--user");
+const inputClosePin = document.querySelector(".form__input--pin");
 
 // 147 Creating DOM elements
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   // first empty the container outside:
-  containerMovements.innerHTML = '';
+  containerMovements.innerHTML = "";
   // the same as .textContent = 0 .
 
+  const movs = sort
+    ? movements.slice().sort((movA, movB) => movA - movB)
+    : movements;
+
   // 2) here we specify this data
-  movements.forEach(function (mov, i) {
-    let type = mov > 0 ? 'deposit' : 'withdrawal';
+  movs.forEach(function (mov, i) {
+    let type = mov > 0 ? "deposit" : "withdrawal";
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">
@@ -81,13 +85,14 @@ const displayMovements = function (movements) {
     `;
 
     // 1) we want to insert html row with specific data
-    containerMovements.insertAdjacentHTML('afterbegin', html);
+    containerMovements.insertAdjacentHTML("afterbegin", html);
   });
 };
 
 // We dont want these function calls hardcoded, we want them to apply to the currentAccount that passes the test of login:
 // console.log(displayMovements(account1.movements));
-////
+/////////////////////////////////////////////
+///////////////////////////////////////////
 // Calculate Balance 'after reduce'
 
 const calcDisplayBalance = function (acc) {
@@ -104,11 +109,12 @@ const calcDisplayBalance = function (acc) {
 // We dont want these function calls hardcoded, we want them to apply to the currentAccount that passes the test of login:
 // console.log(calcDisplayBalance(account1.movements));
 
+/////////////////////////////////////////////////
 const calcDisplaySummary = function (acc) {
   // const incomes = movements
   // for each specific account
   const incomes = acc.movements
-    .filter(mov => mov > 0)
+    .filter((mov) => mov > 0)
     .reduce((acc, mov) => acc + mov);
   // selecting and changing the content
   labelSumIn.textContent = `${incomes}€`;
@@ -116,17 +122,17 @@ const calcDisplaySummary = function (acc) {
   // for each specific account
 
   const out = acc.movements
-    .filter(mov => mov < 0)
+    .filter((mov) => mov < 0)
     .reduce((acc, mov) => acc + mov);
   labelSumOut.textContent = `${Math.abs(out)}€ `;
 
   // for each specific account
 
   const interest = acc.movements
-    .filter(mov => mov > 0)
+    .filter((mov) => mov > 0)
     // for each specific account
 
-    .map(deposit => (deposit * acc.interestRate) / 100)
+    .map((deposit) => (deposit * acc.interestRate) / 100)
     .filter((int, i, arr) => {
       console.log(arr);
       return int >= 1;
@@ -183,6 +189,8 @@ const calcDisplaySummary = function (acc) {
 // };
 // console.log(createUserNames('Steven Thomas Williams'));
 
+////////////////////////////////////////////////////////////////
+// 151
 //> we want to create userName for each of the accounts array:
 // first we will RECIEVE array of accounts in this function:
 
@@ -193,7 +201,7 @@ const createUserNames = function (accs) {
     // second we will we will attach the new property using'acc.username=acc.owner'
     acc.userName = acc.owner
       .toLowerCase()
-      .split(' ')
+      .split(" ")
       // SPLIT METHOD return AN ARRAY.
       // console.log(userName); //array of the name splitted
 
@@ -202,7 +210,7 @@ const createUserNames = function (accs) {
       })
       // WHAT MAP DOES IS THAT IT **ALWAYS** creates NEW ARRAY 'return' with THE NEW VALUE that we pass in.' instead of the first for-of loop.
       // use console.log EVERY TIME you did new function.
-      .join('');
+      .join("");
     // console.log(userName);
 
     //> here we will NOT return anything bec we just need the side effect of adding a property,we dont want return the userName itself like is=n the first one.
@@ -227,7 +235,7 @@ const updateUI = function (acc) {
 // Event handlers
 let currentAccount;
 
-btnLogin.addEventListener('click', function (e) {
+btnLogin.addEventListener("click", function (e) {
   // pervent form from refresh
   e.preventDefault();
   //to check:
@@ -235,7 +243,7 @@ btnLogin.addEventListener('click', function (e) {
 
   // check username === to the username inputted by the user in the input field, that will be the current account that we will do all the work on :
   currentAccount = accounts.find(
-    acc => acc.userName === inputLoginUsername.value
+    (acc) => acc.userName === inputLoginUsername.value
   );
 
   console.log(currentAccount);
@@ -245,13 +253,13 @@ btnLogin.addEventListener('click', function (e) {
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
     //> Display UI and message
     labelWelcome.textContent = `Welcome back, ${
-      currentAccount.owner.split(' ')[0]
+      currentAccount.owner.split(" ")[0]
     }`;
     // change the opacity to 100 to show the ui:
     containerApp.style.opacity = 100;
 
     // Clear input fields: ofcourse it will be here after we log in
-    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginUsername.value = inputLoginPin.value = "";
     // Remove the focus off the input fields
     inputLoginPin.blur();
 
@@ -260,14 +268,14 @@ btnLogin.addEventListener('click', function (e) {
   }
 });
 
-btnTransfer.addEventListener('click', function (e) {
+btnTransfer.addEventListener("click", function (e) {
   e.preventDefault();
 
   const amount = Number(inputTransferAmount.value);
   // const recieverAccount = inputTransferTo.value
   // THE ABOVE is just setting the variable to the input, but i MUST first find the account which MATCHES the input:
   const recieverAccount = accounts.find(
-    acc => acc.userName === inputTransferTo.value
+    (acc) => acc.userName === inputTransferTo.value
   ); // IMP: we captured this in a variable bec this will produce a value,UNLIKE the next event which just checking and based on the check do this
 
   console.log(amount, recieverAccount);
@@ -287,18 +295,21 @@ btnTransfer.addEventListener('click', function (e) {
   }
 
   // Clear input fields:
-  inputTransferAmount.value = inputTransferTo.value = '';
+  inputTransferAmount.value = inputTransferTo.value = "";
 
   inputTransferAmount.blur();
 });
 
 // 161 some and every
-btnLoan.addEventListener('click', function (e) {
+btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
 
   const amount = Number(inputLoanAmount.value);
 
-  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+  if (
+    amount > 0 &&
+    currentAccount.movements.some((mov) => mov >= amount * 0.1)
+  ) {
     // Add +ve movement:
     currentAccount.movements.push(amount);
 
@@ -307,11 +318,11 @@ btnLoan.addEventListener('click', function (e) {
   }
 
   // Clear fields
-  inputLoanAmount.value = '';
+  inputLoanAmount.value = "";
   inputLoanAmount.blur();
 });
 
-btnClose.addEventListener('click', function (e) {
+btnClose.addEventListener("click", function (e) {
   e.preventDefault();
 
   //here we DONT wanna find an account with specific conditions'recieved account' that we will push values to him, here we just wanna CHECK if the values inputted arethe same as currentAcc, and we will not capture 'SAVE' a value bec there is no value that will come out like an account or anything:
@@ -325,7 +336,7 @@ btnClose.addEventListener('click', function (e) {
 
     // here you wanna set the condition to be true if the above is true, so repeat it:
     const index = accounts.findIndex(
-      acc => acc.userName === currentAccount.userName
+      (acc) => acc.userName === currentAccount.userName
     );
     console.log(index);
 
@@ -341,399 +352,17 @@ btnClose.addEventListener('click', function (e) {
   // Above is Wrong , bec when i press the btn, this is the first thing that will happen and that is wrong
   // so it MUSt be AFTER logout ,
 
-  inputClosePin.value = inputCloseUsername.value = '';
+  inputClosePin.value = inputCloseUsername.value = "";
 
   inputClosePin.blur();
 });
 /////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
 
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
+let sorted = false;
+btnSort.addEventListener("click", function (e) {
+  e.preventDefault();
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
-/////////////////////////////////////////////////
-/*
-// Simple array methods:
-let arr = ['a', 'b', 'c', 'd', 'e'];
-
-//SLICE
-console.log(arr.slice(1, 4));
-console.log(arr.slice(1, -2));
-console.log(arr.slice(-1));
-
-//SPLICE
-// console.log(arr.splice(1,2));
-console.log(arr);
-console.log(arr.splice(-1));
-console.log(arr);
-
-//REVERSE
-const arr2 = ['f', 'g', 'h', 'i'];
-console.log(arr2.reverse());
-
-//CONCAT
-const letters = arr.concat(arr2);
-console.log(letters);
-
-//JOIN
-console.log(letters.join('-'));
-
-////////////////////////////////////////
-// at method .. NOT studied
-
-////////////////////////////////////
-// forEach
-/*
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
-// for (const movement of movements) {
-for (const [i, movement] of movements.entries()) {
-  if (movement > 0) {
-    console.log(`Movement ${i + 1}:You deposited ${movement}`);
-  } else {
-    console.log(`Movement ${i + 1}:You withdrew ${Math.abs(movement)}`);
-  }
-}
-
-console.log('----FOREACH-----');
-movements.forEach(function (mov, i, arr) {
-  if (mov > 0) {
-    console.log(`Movement ${i + 1}:You deposited ${mov}`);
-  } else {
-    console.log(`Movement ${i + 1}:You withdrew ${Math.abs(mov)}`);
-  }
+  displayMovements(currentAccount.movements, !sorted);
+  // you cant just sort the array, you MUST DISPLAY it also
+  sorted = !sorted;
 });
-
-// 0:function(200)
-// 1:function(450)
-// 2:function(-400)
-
-////////////////////////////////
-// Coding Challenge 1 #
-const dogsJulia = [3, 5, 2, 12, 7];
-const dogsKate = [4, 1, 15, 8, 3];
-
-const checkDogs = function (dogsJulia, dogsKate) {
-  const dogsJuliaCorrected = dogsJulia.slice();
-  dogsJuliaCorrected.splice(0, 1);
-  dogsJuliaCorrected.splice(-2, 2);
-  console.log(dogsJuliaCorrected);
-  const newCorrectedData = dogsJuliaCorrected.concat(dogsKate);
-  console.log(newCorrectedData);
-
-  newCorrectedData.forEach(function (dogAge, i) {
-    const dogType = dogAge >= 3 ? 'an adult' : 'a puppy';
-    console.log(
-      ` Dog number ${i + 1} is ${dogType} and is ${dogAge} years old. `
-    );
-  });
-};
-
-console.log(checkDogs(dogsJulia, dogsKate));
-
-///////////////////////////////
-// map method
-
-// const euroToUsd = 1.1;
-
-// const movementsUSD = movements.map(function (mov) {
-//   return mov * euroToUsd;
-// });
-
-console.log(movements); // still the same , 'not mutated'
-// console.log(movementsUSD);
-
-// We can do the above with forof,, but now it is better to use Functional Programming.
-const movementsUSD = movements.map(mov => {
-  return mov * euroToUsd;
-});
-
-console.log(movementsUSD);
-
-////////////////////////////////
-// 152- filter method
-const deposits = movements.filter(function (mov) {
-  return mov > 0;
-});
-
-console.log(deposits);
-
-// INSTEAD OF using PUSH method
-
-const depositsFor = [];
-for (const mov of movements) {
-  if (mov > 0) {
-    depositsFor.push(mov);
-  }
-}
-console.log(depositsFor);
-
-const withdrawels = movements.filter(function (mov) {
-  return mov < 0;
-});
-
-console.log(withdrawels);
-/////////////////////////
-// reduce method
-
-// acc -> SNOWBALL
-const balance = movements.reduce(function (acc, curr, i, arr) {
-  // just to show details:
-  console.log(`Iteration ${i} : ${acc}`);
-
-  return acc + curr;
-}, 0);
-
-console.log(balance);
-
-// WITH FOR-OF lOOP
-
-let sum = 0;
-for (let mov of movements) {
-  sum += mov;
-} // for-of does not accept return??
-
-console.log(sum);
-
-// Max value
-const maxValue = movements.reduce(function (acc, mov) {
-  if (acc > mov) {
-    return acc; // if true the acc will stays the same in thenext iteration
-  } else {
-    return mov; // return this as the new acc in the next iteration
-  }
-}, movements[0]);
-
-console.log(maxValue);
-///////////////////////////////
-// Coding Challenge 2 //IMPOOOR//
-const calcAvgHumanAge = function (ages) {
-  const humanAges = ages.map(dogAge =>
-    // if (dogAge <= 2) {
-    //   return  2 * dogAge;
-    // } else if (dogAge > 2) {
-    //   return 16 + dogAge * 4;
-    // }
-
-    // this has return value automaticly
-    dogAge <= 2 ? 2 * dogAge : 16 + dogAge * 4
-  ); // till here me
-
-  // return humanAge;
-  // IMP : you should use return in JavaScript when you want to stop the execution of a function and return a value to its caller.
-
-  // you want to complete calculations .. so here you can just log the first value to the console
-  // console.log(humanAge);
-
-  const adultHumans = humanAges.filter(humanAge => {
-    return humanAge >= 18;
-  });
-
-  //just to make sure
-  // console.log(adultHumans);
-
-  const avgAdultAges =
-    adultHumans.reduce((acc, age) => {
-      return acc + age;
-    }, 0) / adultHumans.length;
-  //to make sure
-  // console.log(adultAgeSum);
-
-  //intead of doing this: just add / adultHumans.length at the end
-  // const avgAdultAges = adultAgeSum / adultHumans.length;
-
-  return avgAdultAges;
-};
-console.log(calcAvgHumanAge([5, 2, 4, 1, 15, 8, 3]));
-
-/* 
-me
-// use the value 'array' coming out from this function by storing it into variable:
-const humanAges = calcAvgHumanAge([5, 2, 4, 1, 15, 8, 3]);
-
-
-calcAvgHumanAge([5, 2, 4, 1, 15, 8, 3])
-const adultHumans = humanAges.filter(humanAge => {
-  return humanAge >= 18;
-});
-
-console.log(adultHumans);
-
-const adultAgeSum = adultHumans.reduce((acc, age) => {
-  return acc + age;
-}, 0);
-
-console.log(adultAgeSum);
-
-console.log(adultHumans.length);
-const avgAdultAges = adultAgeSum / adultHumans.length;
-console.log(avgAdultAges);
-me
-*/
-
-///////////////////////////
-// 155 - Magic of Chaining methods
-
-const euroToUsd = 1.1;
-
-// PIPELINE
-const totalDepositsUSD = movements
-  .filter(mov => {
-    return mov > 0;
-  })
-  .map((mov, i, arr) => {
-    // console.log(arr); just to check the value
-    return mov * euroToUsd;
-  })
-  .reduce((acc, mov) => {
-    return acc + mov;
-  }, 0);
-// every method returns new array ,except reduce 'returns value'
-
-console.log(totalDepositsUSD);
-////////////////////////////////////
-// Coding Chalenge 3
-
-/*
-const calcAvgHumanAge = function (ages) {
-  const humanAges = ages.map(dogAge =>
-    // if (dogAge <= 2) {
-    //   return  2 * dogAge;
-    // } else if (dogAge > 2) {
-    //   return 16 + dogAge * 4;
-    // }
-
-    // this has return value automaticly:
-    dogAge <= 2 ? 2 * dogAge : 16 + dogAge * 4
-  ); // till here me.
-
-  // return humanAge;
-  // IMP : you should use return in JavaScript when you want to stop the execution of a function and return a value to its caller.
-
-  ///> IMP: you want to complete calculations .. so here you can just log the first value to the console:
-  // console.log(humanAge);
-
-  const adultHumans = humanAges.filter(humanAge => {
-    return humanAge >= 18;
-  });
-
-  //just to make sure:
-  // console.log(adultHumans);
-
-  const avgAdultAges =
-    adultHumans.reduce((acc, age) => {
-      return acc + age;
-    }, 0) / adultHumans.length;
-  //to make sure:
-  // console.log(adultAgeSum);
-
-  //intead of doing this: just add / adultHumans.length at the end of the above method.
-  // const avgAdultAges = adultAgeSum / adultHumans.length;
-
-  return avgAdultAges;
-};
-console.log(calcAvgHumanAge([5, 2, 4, 1, 15, 8, 3]));
-*/
-///////
-// you should not use {} with arrow funcs
-const calcAvgHumanAge = ages =>
-  ages
-    .map(age => (age <= 2 ? 2 * age : 16 + age * 4))
-    .filter(age => {
-      return age >= 18;
-    })
-    .reduce((acc, age, i, arr) => {
-      return acc + age / arr.length;
-    }, 0);
-// /adults.length does not exist so this is the ony way by using the arr in .map
-const avg1 = calcAvgHumanAge([5, 2, 4, 1, 15, 8, 3]);
-
-console.log(avg1);
-//////////////////////////////////////
-// 157- the find method
-
-const firstWithdrawal = movements.find(mov => mov < 0);
-
-console.log(firstWithdrawal);
-
-const account = accounts.find(acc => acc.owner === 'Jessica Davis');
-console.log(account);
-
-// for (let acc of accounts) {
-//   if (acc.owner === 'Jessica Davis') {
-//     console.log(acc);
-//   }
-// }
-
-//////////////////////////////////////////
-// 161 some and every
-
-// EQUALITY ONLY
-movements.includes(-130); // true
-// -------------the same as-------------------
-movements.some(mov => mov === -130);
-
-// SOME: CONDITION
-const anyDepositsHere = movements.some(mov => mov > 0);
-console.log(anyDepositsHere); // true
-
-// EVERY
-console.log(movements.every(mov => mov > 0)); //false
-console.log(account4.movements.every(mov => mov > 0)); //true bec all of the movements here is true
-
-// Seperate callbacks
-const deposit = mov => mov > 0;
-console.log(movements.some(deposit));
-console.log(movements.every(deposit));
-console.log(movements.filter(deposit));
-///////////////////////////////////////
-// 163 sorting arrays
-
-// sort() mutate arrays
-
-// Strings
-const owners = ['John', 'May', 'Nour', 'Ahmed'];
-console.log(owners.sort());
-
-// NUmbers
-console.log(movements);
-// sort only works with strings, so it sort every thing alphapiticly like ' -,+,1,2,...':
-// console.log(movements.sort());
-
-//return > 0 .. B , A (switch order)
-//return < 0 .. A , B (keep in that order)
-
-// ascending
-
-// movements.sort((a, b) => {
-//   if (a > b) {
-//     return 1; // means if a > b sitch and make b 'the samller' to be the first
-//   }
-//   if (a < b) {
-//     return -1;
-//   }
-// });
-
-// we can replace 'return 1 or -1' by simply saying a - b ,so if a is greater than b it will return + , if a is less than b it will return - automaticly.And like that it can be ASCENDING:
-movements.sort((a, b) => a - b);
-
-console.log(movements);
-
-// descending
-// movements.sort((a, b) => {
-//   if (a > b) {
-//     return -1; // means if a > b sitch and make b 'the samller' to be the first
-//   }
-//   if (a < b) {
-//     return 1;
-//   }
-// });
-movements.sort((a, b) => b - a);
-
-console.log(movements);
